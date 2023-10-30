@@ -12,5 +12,11 @@ public class HelloWorld {
         // 스프링에서 관리하는것은 무엇이든 Bean이 될 수 있다
         System.out.println((context.getBean("name")));
         System.out.println((context.getBean("age")));
+        System.out.println((context.getBean("person")));
+        System.out.println((context.getBean("person2")));
+        System.out.println((context.getBean("myAddress")));
+
+
+
     }
 }
