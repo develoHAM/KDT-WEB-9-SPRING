@@ -1,5 +1,6 @@
 package com.example.KDT9Example.game;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +18,9 @@ public class GameMain {
 //        GameEngine engine2 = new GameEngine(game2);
 //        engine.run();
 //        engine2.run();
-
         context.getBean(GameConsole.class).up();
+
+
         context.getBean(GameEngine.class).run();
     }
 }

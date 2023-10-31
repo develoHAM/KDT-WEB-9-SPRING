@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymelear.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<!--<h1>Post 실습</h1>-->
+<!--  <form action="/postpracticedto" method="post" style="border: 1px solid black;">-->
+<!--    <label for="name">이름</label>-->
+<!--    <input type="text" id="name" name="name"/>-->
+<!--    <br>-->
+<!--    <label>성별</label>-->
+<!--    <input type="radio" value="남자" id="male" name="gender">-->
+<!--    <label for="male">남자</label>-->
+<!--    <input type="radio" value="여자" id="female" name="gender">-->
+<!--    <label for="female">여자</label>-->
+<!--    <br>-->
+<!--    <label>생년월일</label>-->
+<!--    <select name="year" id="years">-->
+<!--      <th:block th:each="num: ${#numbers.sequence(1980, 2023)}">-->
+<!--        <option th:text="${num}" th:value="${num}"></option>-->
+<!--      </th:block>-->
+<!--    </select>-->
+<!--    <label for="years">년</label>-->
+<!--    <select name="month" id="months">-->
+<!--      <th:block th:each="num: ${#numbers.sequence(1, 12)}">-->
+<!--        <option th:text="${num}" th:value="${num}"></option>-->
+<!--      </th:block>-->
+<!--    </select>-->
+<!--    <label for="months">월</label>-->
+<!--    <select name="day" id="days">-->
+<!--      <th:block th:each="num: ${#numbers.sequence(1, 31)}">-->
+<!--        <option th:text="${num}" th:value="${num}"></option>-->
+<!--      </th:block>-->
+<!--    </select>-->
+<!--    <label for="days">일</label>-->
+<!--    <br>-->
+<!--    <label>관심사</label>-->
+<!--    <input type="checkbox" value="여행" name="interests" id="travel">-->
+<!--    <label for="travel">여행</label>-->
+<!--    <input type="checkbox" value="패션" name="interests" id="fashion">-->
+<!--    <label for="fashion">패션</label>-->
+<!--    <input type="checkbox" value="음식" name="interests" id="food">-->
+<!--    <label for="food">음식</label>-->
+<!--    <br>-->
+<!--    <button type="submit">회원가입</button>-->
+<!--  </form>-->
+
+  <script>
+    function submitForm() {
+      const form = document.getElementById('axios_form');
+      console.log(form);
+      const checked = document.querySelectorAll('input[type="checkbox"][name="interests"]:checked');
+      const interests = [...checked].map(c => c.value);
+      axios.post(`/postpracticeaxios`, {name: form.name.value, gender: form.gender.value, year: form.year.value, month: form.month.value, day: form.day.value, interests: interests})
+      .then((res)=>{
+          console.log( 'res : ', res );
+          console.log( 'res.data : ', res.data );
+      });
+    }
+  </script>
+
+<h1>Axios 동적 폼 실습</h1>
+<form action="/postpracticeaxios" method="post" style="border: 1px solid black;" id="axios_form">
+  <label for="name">이름</label>
+  <input type="text" id="name" name="name"/>
+  <br>
+  <label>성별</label>
+  <input type="radio" value="남자" id="male" name="gender">
+  <label for="male">남자</label>
+  <input type="radio" value="여자" id="female" name="gender">
+  <label for="female">여자</label>
+  <br>
+  <label>생년월일</label>
+  <select name="year" id="years">
+    <th:block th:each="num: ${#numbers.sequence(1980, 2023)}">
+      <option th:text="${num}" th:value="${num}"></option>
+    </th:block>
+  </select>
+  <label for="years">년</label>
+  <select name="month" id="months">
+    <th:block th:each="num: ${#numbers.sequence(1, 12)}">
+      <option th:text="${num}" th:value="${num}"></option>
+    </th:block>
+  </select>
+  <label for="months">월</label>
+  <select name="day" id="days">
+    <th:block th:each="num: ${#numbers.sequence(1, 31)}">
+      <option th:text="${num}" th:value="${num}"></option>
+    </th:block>
+  </select>
+  <label for="days">일</label>
+  <br>
+  <label>관심사</label>
+  <input type="checkbox" value="여행" name="interests" id="travel">
+  <label for="travel">여행</label>
+  <input type="checkbox" value="패션" name="interests" id="fashion">
+  <label for="fashion">패션</label>
+  <input type="checkbox" value="음식" name="interests" id="food">
+  <label for="food">음식</label>
+  <br>
+  <button type="button" onclick="submitForm()">회원가입</button>
+</form>
+</body>
+</html>
