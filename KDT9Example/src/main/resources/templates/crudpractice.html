@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymelear.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <script>
+    function signup() {
+      const form = document.getElementById('signup_form')
+      const data = {
+        userid: form.userid.value,
+        password: form.password.value,
+        name: form.name.value
+      }
+      const userList = document.getElementById('userList')
+      axios.post(`/crudpractice/user/signup`, data).then((res) => {
+        console.log('res.data', res.data)
+        userList.innerHTML = '';
+        const users = res.data;
+        users.map((user) => {
+          const userInfo = document.createElement('li');
+          userInfo.textContent = `고유 번호(DB ID): ${user.dbid} - 아이디: ${user.userid} - 이름: ${user.name}`;
+          userList.appendChild(userInfo);
+        });
+      });
+    }
+
+    function login() {
+      const form = document.getElementById('login_form')
+      const userinfo = document.getElementById('user_info')
+      const resultBox = document.getElementById('loginResult');
+      const data = {
+        userid: form.login_userid.value,
+        password: form.login_password.value
+      }
+      axios.post(`/crudpractice/user/login`, data).then((res) => {
+      if(res.data) {
+        resultBox.textContent = '로그인 성공!';
+        console.log(res.data.userid);
+        const {userid, password, name, dbid} = res.data;
+        userinfo.userinfo_userid.value = userid;
+        userinfo.userinfo_password.value = password;
+        userinfo.userinfo_name.value = name;
+        userinfo.userinfo_dbid.value = dbid;
+      } else {
+        resultBox.textContent = '로그인 실패';
+      }
+    })
+    }
+
+    function putUser() {
+      const userinfo = document.getElementById('user_info');
+      const userList = document.getElementById('userList');
+      const userinfo2 = document.getElementById('user_info');
+
+      const data = {
+        userid: userinfo2.userinfo_userid.value,
+        password: userinfo2.userinfo_password.value,
+        name: userinfo2.userinfo_name.value,
+        dbid: userinfo2.userinfo_dbid.value
+      }
+
+      axios.put(`/crudpractice/user/login`, data)
+      .then((res) => {
+        console.log('res.data', res.data);
+        userList.innerHTML = '';
+        const users = res.data;
+
+        users.map((user) => {
+          const userInfo = document.createElement('li');
+          userInfo.textContent = `고유 번호(DB ID): ${user.dbid} - 아이디: ${user.userid} - 이름: ${user.name}`;
+          userList.appendChild(userInfo);
+
+
+        })
+
+      })
+    }
+
+  function deleteUser() {
+      const userinfo = document.getElementById('user_info');
+      const userList = document.getElementById('userList');
+      const userinfo2 = document.getElementById('user_info');
+
+      const data = {
+        userid: userinfo2.userinfo_userid.value,
+        password: userinfo2.userinfo_password.value,
+        name: userinfo2.userinfo_name.value,
+        dbid: userinfo2.userinfo_dbid.value
+      }
+
+      console.log(data, 'data');
+
+      axios.delete(`/crudpractice/user/delete`, {data: data}).then((res) => {
+        console.log('res.data', res.data);
+        userList.innerHTML = '';
+        const users = res.data;
+
+        userinfo2.userinfo_userid.value = '';
+        userinfo2.userinfo_password.value = '';
+        userinfo2.userinfo_name.value = '';
+        userinfo2.userinfo_dbid.value = '';
+
+        users.map((user) => {
+          const userInfo = document.createElement('li');
+          userInfo.textContent = `고유 번호(DB ID): ${user.dbid} - 아이디: ${user.userid} - 이름: ${user.name}`;
+          userList.appendChild(userInfo);
+        })
+      })
+    }
+
+  </script>
+  <h1>CRUD 실습</h1>
+  <div style="display: flex; justify-content: space-evenly;">
+  <div>
+    <h3>회원가입 폼</h3>
+    <form id="signup_form">
+      <input type="text" name="userid" placeholder="아이디"/>
+      <br>
+      <input type="password" name="password" placeholder="비밀번호"/>
+      <br>
+      <input type="text" name="name" placeholder="이름">
+      <br>
+      <button type="button" onclick="signup()">가입</button>
+    </form>
+    <hr>
+    <h3>로그인 폼</h3>
+    <form id="login_form">
+      <input type="text" placeholder="아이디" name="login_userid">
+      <br>
+      <input type="password" placeholder="비밀번호" name="login_password">
+      <br>
+      <button type="button" onclick="login()">로그인</button>
+    </form>
+    <div id="loginResult"></div>
+  </div>
+<div>
+  <h3>내 정보</h3>
+  <form id="user_info">
+    <input type="text" name="userinfo_userid" id="userinfo_userid"><br>
+    <input type="text" name="userinfo_password" id="userinfo_password"><br>
+    <input type="text" name="userinfo_name" id="userinfo_name"><br>
+    <input type="hidden" name="userinfo_dbid" id="userinfo_dbid"><br>
+    <button type="button" onclick="putUser()">수정</button>
+    <button type="button" onclick="deleteUser()">회원 탈퇴</button>
+  </form>
+</div>
+  <div>
+    <h3>회원 리스트</h3>
+    <ul id="userList">
+    </ul>
+  </div>
+  </div>
+</body>
+</html>

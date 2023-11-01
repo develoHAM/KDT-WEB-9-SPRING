@@ -1,16 +1,16 @@
 package com.example.KDT9Example.controller;
 
-import com.example.KDT9Example.dto.PracticeDTO;
-import com.example.KDT9Example.dto.UserDTO;
+import com.example.KDT9Example.dto.*;
 import com.example.KDT9Example.vo.PracticeVO;
 import com.example.KDT9Example.vo.UserVO;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 
 @Controller
 // @RestController
@@ -247,12 +247,86 @@ public class MainController {
         System.out.println(user.getMonth());
         System.out.println(user.getDay());
         System.out.println(Arrays.toString(user.getInterests()));
-
-
-
         String msg =  user.getName() + " 회원가입 성공";
-
         return user;
+    }
+
+    // CRUD practice
+    @GetMapping("/crudpractice")
+    public String crudGetMainPage(){
+        return "crudpractice";
+    }
+
+    @PostMapping("/crudpractice/user/signup")
+    @ResponseBody
+    public ArrayList crudPostUserSignup(@RequestBody User user, Model model){
+        Database db = new Database();
+        db.addUser(user);
+        ArrayList<User> users = db.getUsers();
+        return users;
+    }
+
+    @PostMapping("/crudpractice/user/login")
+    @ResponseBody
+    public UserLogin crudPostUserLogin(@RequestBody UserLogin user, Model model){
+        Database db = new Database();
+        ArrayList<User> users = db.getUsers();
+        boolean loginSuccess = false;
+
+        for (User u: users) {
+            if (u.getUserid().equals(user.getUserid()) && u.getPassword().equals(user.getPassword())) {
+                loginSuccess = true;
+                user.setDbid(u.getDbid());
+                user.setName(u.getName());
+                break;
+            }
+        }
+
+        if (loginSuccess) {
+            return user;
+        } else {
+            return null;
+        }
+    }
+
+    @PutMapping("/crudpractice/user/login")
+    @ResponseBody
+    public ArrayList crudPutUserEdit(@RequestBody User user, Model model) {
+        Database db = new Database();
+        ArrayList<User> users = db.getUsers();
+        System.out.println("putUser" + user.getDbid());
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i).getDbid());
+            if (user.getDbid() == users.get(i).getDbid()) {
+
+                users.set(i, user);
+                db.setUser(users);
+            };
+        }
+        ArrayList<User> newUsers = db.getUsers();
+        return newUsers;
+    }
+
+    @DeleteMapping("/crudpractice/user/delete")
+    @ResponseBody
+    public ArrayList crudDeleteUser(@RequestBody User user, Model model) {
+        System.out.println("user's userid: " + user.getUserid());
+
+        Database db = new Database();
+        ArrayList<User> users = db.getUsers();
+        int deleteIdx = 0;
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i).getDbid());
+            if (user.getDbid() == users.get(i).getDbid()) {
+                deleteIdx = i;
+                break;
+            };
+        }
+        users.remove(deleteIdx);
+        db.setUser(users);
+        ArrayList<User> newUsers = db.getUsers();
+        System.out.println("newUsers: " + newUsers);
+        return newUsers;
     }
 
 }
