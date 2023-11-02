@@ -117,10 +117,13 @@
   <div>
     <h3>회원가입 폼</h3>
     <form id="signup_form">
+      <label>아이디</label>
       <input type="text" name="userid" placeholder="아이디"/>
       <br>
+      <label>비밀번호</label>
       <input type="password" name="password" placeholder="비밀번호"/>
       <br>
+      <label>이름</label>
       <input type="text" name="name" placeholder="이름">
       <br>
       <button type="button" onclick="signup()">가입</button>
@@ -128,8 +131,10 @@
     <hr>
     <h3>로그인 폼</h3>
     <form id="login_form">
+      <label>아이디</label>
       <input type="text" placeholder="아이디" name="login_userid">
       <br>
+      <label>비밀번호</label>
       <input type="password" placeholder="비밀번호" name="login_password">
       <br>
       <button type="button" onclick="login()">로그인</button>
@@ -139,8 +144,11 @@
 <div>
   <h3>내 정보</h3>
   <form id="user_info">
+    <label>아이디</label>
     <input type="text" name="userinfo_userid" id="userinfo_userid"><br>
+    <label>비밀번호</label>
     <input type="text" name="userinfo_password" id="userinfo_password"><br>
+    <label>이름</label>
     <input type="text" name="userinfo_name" id="userinfo_name"><br>
     <input type="hidden" name="userinfo_dbid" id="userinfo_dbid"><br>
     <button type="button" onclick="putUser()">수정</button>
