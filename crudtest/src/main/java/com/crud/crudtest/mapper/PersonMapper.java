@@ -2,9 +2,8 @@ package com.crud.crudtest.mapper;
 
 
 import com.crud.crudtest.domain.Person;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import com.crud.crudtest.dto.PersonDTO;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface PersonMapper {
@@ -12,12 +11,23 @@ public interface PersonMapper {
 
 
     //회원가입
-    @Insert("INSERT INTO person (user_id, password, name) VALUES ( #{user_id}, #{password}, #{name} )")
+    @Insert("INSERT INTO person (userid, password, name) VALUES ( #{userid}, #{password}, #{name} )")
     void insertPerson(Person person);
 
 
     //로그인
-    @Select("SELECT * FROM person WHERE (user_id=#{user_id} and password=#{password}) ")
-    Person getPerson(String user_id, String password);
+    @Select("SELECT * FROM person WHERE (userid=#{userid} and password=#{password}) ORDER BY id DESC LIMIT 1 ")
+    Person getPerson(PersonDTO personDTO);
 
+    //사용자 정보 조회
+    @Select("SELECT * FROM person WHERE id=#{id}")
+    Person getPersonData(PersonDTO personDTO);
+
+    //사용자 정보 수정
+    @Update("UPDATE person SET password=#{password}, name=#{name} WHERE userid=#{userid} ")
+    void updatePerson(Person person);
+
+    //사용자 정보 삭제
+    @Delete("DELETE FROM person WHERE userid=#{userid}")
+    void deletePerson(String userid);
 }

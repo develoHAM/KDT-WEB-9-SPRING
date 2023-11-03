@@ -8,8 +8,8 @@
 </head>
 <body>
 <form id="login_form">
-    <input type="text" name="id" id="id" /><br/>
-    <input type="password" name="pw" /><br />
+    <input type="text" name="id" id="id" placeholder="id"/><br/>
+    <input type="password" name="pw" placeholder="pw"/><br />
     <button type="button" onclick="login()" >로그인</button>
 </form>
 
@@ -17,8 +17,8 @@
     function login() {
         const form = document.getElementById("login_form");
         const data = {
-            user_id: form.id.value,
-            password: form.pw.value
+            userid: form.id.value,
+            password: form.pw.value,
         }
         axios({
             method: "POST",
@@ -26,6 +26,7 @@
             data
         }).then(res => {
             console.log(res)
+            document.location.href = `/data/${res.data.id}`;
         })
     }
 </script>

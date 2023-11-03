@@ -34,7 +34,11 @@ public class MainController {
     @ResponseBody
     public List getUsers() {
         List userList = accountService.getUserList();
-        return userList;
+        if (userList == null) {
+            return null;
+        } else {
+            return userList;
+        }
     }
 
     @PostMapping("/login")

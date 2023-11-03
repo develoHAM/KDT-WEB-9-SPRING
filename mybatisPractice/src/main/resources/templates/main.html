@@ -18,6 +18,9 @@
             const userList = document.getElementById('userList')
             axios.get('/users').then((res) => {
                 console.log('updateUser res.data', res.data)
+                if (res.data == null) {
+                    userList.innerHTML = '';
+                }
                 if (res.data.length > 0) {
                     userList.innerHTML = '';
                     const userArray = res.data;
@@ -117,6 +120,7 @@
                     updateUsers();
                 } else {
                     resultBox.textContent = '삭제 실패'
+                    updateUsers();
                 }
 
             })

@@ -7,9 +7,9 @@
 </head>
 <body>
     <form id="register_form">
-        <input type="text" name="id" id="id" /><br/>
-        <input type="password" name="pw" /><br />
-        <input type="text" name="name" />
+        <input type="text" name="id" id="id" placeholder="id"/><br/>
+        <input type="password" name="pw" placeholder="pw"/><br />
+        <input type="text" name="name" placeholder="name"/>
         <button type="button" onclick="register()" >회원가입</button>
     </form>
 
@@ -18,7 +18,7 @@
 
             const form = document.getElementById("register_form");
             const data = {
-                user_id: form.id.value,
+                userid: form.id.value,
                 password: form.pw.value,
                 name: form.name.value
             }

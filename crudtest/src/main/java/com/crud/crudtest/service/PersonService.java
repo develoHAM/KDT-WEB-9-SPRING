@@ -17,25 +17,46 @@ public class PersonService {
     public void insertPerson(PersonDTO personDTO) {
         Person person = new Person();
 
-        person.setUser_id( personDTO.getUser_id() );
+        person.setUserid( personDTO.getUserid() );
         person.setPassword( personDTO.getPassword() );
         person.setName( personDTO.getName() );
 
         personMapper.insertPerson(person);
     }
     //로그인
-    public boolean getPerson(PersonDTO personDTO) {
+    public PersonDTO getPerson(PersonDTO personDTO) {
 
-        Person person = personMapper.getPerson(personDTO.getUser_id(), personDTO.getPassword());
-        if(person == null) {
-            return false;
-        } else{
-            return true;
-        }
-//        PersonDTO perDto = new PersonDTO();
-//        perDto.setUser_id( person.getUser_id() );
-//        perDto.setPassword( person.getPassword() );
-//
-//        return perDto;
+        Person person = personMapper.getPerson(personDTO);
+
+        PersonDTO data = new PersonDTO();
+        data.setId(person.getId());
+
+        return data;
+    }
+
+    //회원정보 조죄
+    public PersonDTO getPersonData(PersonDTO reqPer) {
+        Person person = personMapper.getPersonData(reqPer);
+
+        PersonDTO data = new PersonDTO();
+        data.setId(person.getId());
+        data.setUserid(person.getUserid());
+        data.setPassword(person.getPassword());
+        data.setName(person.getName());
+        return data;
+    }
+
+    // 회원정보 수정
+    public void updatePerson(PersonDTO personDTO) {
+        Person person = new Person();
+        person.setName(personDTO.getName());
+        person.setPassword(personDTO.getPassword());
+        person.setUserid(personDTO.getUserid());
+        personMapper.updatePerson(person);
+    }
+
+    // 회원 정보 삭제
+    public void deletePerson(String userid) {
+        personMapper.deletePerson(userid);
     }
 }
