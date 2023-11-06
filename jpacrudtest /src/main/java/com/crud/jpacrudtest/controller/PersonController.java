@@ -1,8 +1,8 @@
-package com.crud.crudtest.controller;
+package com.crud.jpacrudtest.controller;
 
 
-import com.crud.crudtest.dto.PersonDTO;
-import com.crud.crudtest.service.PersonService;
+import com.crud.jpacrudtest.dto.PersonDTO;
+import com.crud.jpacrudtest.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,10 +55,12 @@ public class PersonController {
         return true;
     }
 
+    //회원정보 삭제
     @PostMapping("/delete")
     @ResponseBody
-    public boolean delete(@RequestBody PersonDTO personDTO) {
-        personService.deletePerson(personDTO.getUser_id());
+    public  boolean postDelete(@RequestBody PersonDTO personDTO) {
+        personService.deletePerson(personDTO);
         return true;
     }
+
 }

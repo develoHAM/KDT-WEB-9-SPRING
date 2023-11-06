@@ -2,8 +2,10 @@ package com.crud.crudtest.service;
 
 
 import com.crud.crudtest.domain.Person;
+import com.crud.crudtest.domain.PersonEntity;
 import com.crud.crudtest.dto.PersonDTO;
 import com.crud.crudtest.mapper.PersonMapper;
+import com.crud.crudtest.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +13,13 @@ import org.springframework.stereotype.Service;
 public class PersonService {
 
     @Autowired
-    private PersonMapper personMapper;
-
+//    private PersonMapper personMapper;
+    private PersonRepository personRepository;
 
     public void insertPerson(PersonDTO personDTO) {
         Person person = new Person();
 
-        person.setUserid( personDTO.getUserid() );
+        person.setUser_id( personDTO.getUser_id() );
         person.setPassword( personDTO.getPassword() );
         person.setName( personDTO.getName() );
 
@@ -34,15 +36,14 @@ public class PersonService {
         return data;
     }
 
-    //회원정보 조죄
-    public PersonDTO getPersonData(PersonDTO reqPer) {
-        Person person = personMapper.getPersonData(reqPer);
-
+    //회원정보 조회
+    public PersonDTO getPersonData(long id) {
+//        Person person = personMapper.getPersonData(reqPer);
+        Optional<PersonEntity> person = personRepository.findById(id)
         PersonDTO data = new PersonDTO();
-        data.setId(person.getId());
-        data.setUserid(person.getUserid());
-        data.setPassword(person.getPassword());
-        data.setName(person.getName());
+        data.setUser_id(person.get().getUser_id());
+        data.setPassword(person.get().getPassword());
+        data.setName(person.get().getName());
         return data;
     }
 
@@ -51,12 +52,12 @@ public class PersonService {
         Person person = new Person();
         person.setName(personDTO.getName());
         person.setPassword(personDTO.getPassword());
-        person.setUserid(personDTO.getUserid());
+        person.setUser_id(personDTO.getUser_id());
         personMapper.updatePerson(person);
     }
 
     // 회원 정보 삭제
-    public void deletePerson(String userid) {
-        personMapper.deletePerson(userid);
+    public void deletePerson(String user_id) {
+        personMapper.deletePerson(user_id);
     }
 }

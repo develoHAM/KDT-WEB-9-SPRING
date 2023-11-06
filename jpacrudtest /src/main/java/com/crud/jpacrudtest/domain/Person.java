@@ -1,8 +1,8 @@
-package com.crud.crudtest.dto;
+package com.crud.jpacrudtest.domain;
 
-public class PersonDTO {
+public class Person {
     private long id;
-    private String user_id;
+    private String userid;
     private String password;
     private String name;
 
@@ -14,12 +14,12 @@ public class PersonDTO {
         this.id = id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getPassword() {
@@ -37,5 +37,4 @@ public class PersonDTO {
     public void setName(String name) {
         this.name = name;
     }
-
 }

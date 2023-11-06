@@ -2,7 +2,7 @@ package com.crud.crudtest.domain;
 
 public class Person {
     private long id;
-    private String userid;
+    private String user_id;
     private String password;
     private String name;
 
@@ -14,12 +14,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getPassword() {
