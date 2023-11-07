@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div style="display: flex; justify-content: space-evenly;">
+        <div>
+            <h3>게시판 글 작성</h3>
+            <form id="post_form">
+                <label for="title">title: </label>
+                <input type="text" name="title" id="title">
+                <br />
+                <label for="writer">writer: </label>
+                <input type="text" name="writer" id="writer">
+                <br />
+                <label for="content">content: </label>
+                <textarea name="content" id="content"></textarea>
+                <br />
+                <button type="button" onclick="submitPost()">작성</button>
+            </form>
+        </div>
+        <div>
+            <h3>게시판 글 조회</h3>
+            <label for="searchInput">작성자: </label>
+            <input type="text" name="searchInput" id="searchInput">
+            <button onclick="fetchPostsByWriter()">검색</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>title</th>
+                        <th>writer</th>
+                        <th>registered</th>
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <h3>게시판 상세</h3>
+            <form id="post">
+                <label for="form_id">ID: </label>
+                <input type="text" name="form_id" id="form_id" readonly disabled>
+                <br />
+                <label for="form_registered">registered: </label>
+                <input type="text" name="form_registered" id="form_registered" readonly disabled>
+                <br />
+                <label for="form_writer">writer: </label>
+                <input type="text" name="form_writer" id="form_writer" readonly disabled>
+                <br />
+                <label for="form_title">title: </label>
+                <input type="text" name="form_title" id="form_title">
+                <br />
+                <label for="form_content">content: </label>
+                <br />
+                <textarea name="form_content" id="form_content"></textarea>
+                <br />
+                <button type="button" onclick="updatePost()">수정</button>
+                <button type="button" onclick="deletePost()">삭제</button>
+
+            </form>
+        </div>
+    </div>
+    <script>
+        (function() {
+            fetchPosts()
+        })()
+
+        function fetchPosts() {
+            console.log('fetchPosts')
+            const table = document.getElementById("table_body")
+            table.innerHTML = '';
+            axios.get('/posts').then((res) => {
+                console.log('fetchPosts res.data', res.data)
+                const posts = res.data;
+                if(posts == null) {
+                    return;
+                }
+                if(posts.length > 0) {
+                posts.map((post) => {
+                    const row = document.createElement('tr');
+                    const id = document.createElement('td');
+                    id.style.cursor = "pointer";
+                    id.textContent = post.id;
+                    const title = document.createElement('td');
+                    title.textContent = post.title;
+                    const writer = document.createElement('td');
+                    writer.textContent = post.writer;
+                    const registered = document.createElement('td');
+                    registered.textContent = post.registered
+                    row.appendChild(id)
+                    row.appendChild(title)
+                    row.appendChild(writer)
+                    row.appendChild(registered)
+                    row.setAttribute("id",`${post.id}`);
+                    row.addEventListener("click", viewDetails);
+                    table.appendChild(row)
+                })
+                }
+            })
+        }
+
+        function fetchPostsByWriter() {
+            console.log('fetchPostsByWriter');
+            const searchParam = document.getElementById('searchInput')
+            console.log('searchParam.value', searchParam.value);
+            if(searchParam.value == '') {
+                fetchPosts()
+                return;
+            }
+
+            const table = document.getElementById("table_body")
+            table.innerHTML = '';
+
+            axios.get(`/post?writer=${searchParam.value}`).then((res) => {
+                console.log('fetchPostsByWriter res.data', res.data)
+                const posts = res.data;
+                if(posts.length > 0) {
+                posts.map((post) => {
+                    const row = document.createElement('tr');
+                    const id = document.createElement('td');
+                    id.style.cursor = "pointer";
+                    id.textContent = post.id;
+                    const title = document.createElement('td');
+                    title.textContent = post.title;
+                    const writer = document.createElement('td');
+                    writer.textContent = post.writer;
+                    const registered = document.createElement('td');
+                    registered.textContent = post.registered;
+                    row.appendChild(id)
+                    row.appendChild(title)
+                    row.appendChild(writer)
+                    row.appendChild(registered)
+                    row.setAttribute("id",`${post.id}`);
+                    row.addEventListener("click", viewDetails);
+                    table.appendChild(row)
+                })
+                }
+            })
+        }
+
+        function submitPost() {
+            const form = document.getElementById("post_form")
+            const data = {
+                title: form.title.value,
+                writer: form.writer.value,
+                content: form.content.value
+            }
+            axios.post('/post', data).then((res) => {
+                console.log('submitPost res.data', res.data)
+                fetchPosts()
+            })
+        }
+
+        function viewDetails(e) {
+            const form = document.getElementById('post')
+
+            console.log('view details')
+            console.log(e.currentTarget.id)
+            const id = e.currentTarget.id
+            axios.get(`/post/${id}`).then((res) => {
+                console.log('viewDetails res.data', res.data)
+                const post = res.data
+                form.form_id.value = post.id
+                form.form_title.value = post.title
+                form.form_registered.value = post.registered
+                form.form_content.value = post.content
+                form.form_writer.value = post.content
+            })
+        }
+
+        function updatePost() {
+            const form = document.getElementById('post')
+            const data = {
+                id: form.form_id.value,
+                title: form.form_title.value,
+                content: form.form_content.value,
+            }
+            axios.put(`/post`, data).then((res) => {
+                console.log('updatePost res.data', res.data)
+                if(res.data) {
+                    fetchPosts()
+                }
+            })
+        }
+
+        function deletePost() {
+            const form = document.getElementById('post')
+            const id = form.form_id.value;
+            axios.delete(`/post/${id}`).then((res) => {
+                console.log('deletePost res.data', res.data)
+                if(res.data) {
+                    fetchPosts()
+                    form.form_id.value = ''
+                    form.form_title.value = ''
+                    form.form_writer.value = ''
+                    form.form_content.value = ''
+                    form.form_registered.value = ''
+                }
+            })
+        }
+    </script>
+</body>
+</html>

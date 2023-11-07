@@ -37,6 +37,7 @@ public class PersonController {
     @ResponseBody
     public PersonDTO postLogin( @RequestBody PersonDTO personDTO) {
        return personService.getPerson(personDTO);
+
     }
 
     //회원정보 조회
@@ -55,10 +56,12 @@ public class PersonController {
         return true;
     }
 
+    //회원정보 삭제
     @PostMapping("/delete")
     @ResponseBody
-    public boolean delete(@RequestBody PersonDTO personDTO) {
-        personService.deletePerson(personDTO.getUser_id());
+    public  boolean postDelete(@RequestBody PersonDTO personDTO) {
+        personService.deletePerson(personDTO);
         return true;
     }
+
 }

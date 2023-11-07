@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1 style="text-align: center;">게시판 실습</h1>
+    <div>
+        <div>
+            <h2>작성하기</h2>
+            <form id="post_form">
+                <label for="title">제목 : </label>
+                <input type="text" name="title" id="title"/>
+                <br>
+                <label for="content">내용 : </label>
+                <br>
+                <textarea id="content"></textarea>
+                <button type="button" onclick="submitPost()">작성 완료</button>
+            </form>
+        </div>
+        <script>
+            function submitPost() {
+                const form = document.getElementById('post_form');
+                const data = {
+                    title: form.title.value,
+                    content: form.content.value
+                }
+                axios.post(`/post`, data).then((res) => {
+                    console.log('submitPost res.data', res.data)
+                })
+            }
+        </script>
+    </div>
+
+</body>
+</html>
