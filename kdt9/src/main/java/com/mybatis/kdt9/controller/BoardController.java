@@ -30,8 +30,8 @@ public class BoardController {
 
     @PostMapping("/board")
     @ResponseBody
-    public void insertBoard(@RequestBody Board board) {
-        boardService.insertBoard(board);
+    public void insertBoard(@RequestBody BoardDTO boardDTO) {
+        boardService.insertBoard(boardDTO);
     }
 
     @PatchMapping("/board")
